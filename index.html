@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body{
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, Arial;
+}
+
+/* LOGIN SCREEN */
+#login{
+    position:fixed;
+    inset:0;
+    background:#0b0b0f;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:10px;
+    z-index:9999;
+}
+
+#login input{
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    width:200px;
+    text-align:center;
+}
+
+#login button{
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    background:#1f1f25;
+    color:white;
+    cursor:pointer;
+}
+
+/* ERROR */
+#error{
+    color:red;
+    font-size:12px;
+}
+
+/* MAIN SITE */
+#site{
+    display:none;
+}
+
+/* ===== YOUR ORIGINAL STYLE ===== */
+
+body{
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, Arial;
+    background:url('bg.jpg') center/cover no-repeat;
+    height:100vh;
+    overflow:hidden;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+}
+
+.wrapper{
+    position:relative;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:55px;
+    z-index:2;
+}
+
+.stack{
+    position:relative;
+    width:340px;
+    height:110px;
+}
+
+.notification{
+    width:340px;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    background:rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+    position:absolute;
+    left:0;
+
+    transition:0.4s ease;
+}
+
+.notification img{
+    width:46px;
+    height:46px;
+    border-radius:12px;
+    object-fit:cover;
+}
+
+.text{
+    color:white;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    line-height:1.1;
+}
+
+.title{font-size:13px;font-weight:700;}
+.subtitle{font-size:12px;color:#e5e5e5;}
+.small{font-size:11px;color:#cfcfcf;}
+
+.now{
+    position:absolute;
+    top:8px;
+    right:10px;
+    font-size:10px;
+    color:#bdbdbd;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+    <h3 style="color:white;">Enter Password</h3>
+    <input type="password" id="pass" placeholder="password">
+    <button onclick="check()">Login</button>
+    <div id="error"></div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="site">
+
+<div class="overlay"></div>
+
+<div class="wrapper">
+
+    <div class="stack" id="s1"></div>
+    <div class="stack" id="s2"></div>
+    <div class="stack" id="s3"></div>
+    <div class="stack" id="s4"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOGIN CHECK */
+function check(){
+    const p = document.getElementById("pass").value;
+
+    if(p === "sgl"){
+        document.getElementById("login").style.display = "none";
+        document.getElementById("site").style.display = "block";
+        startApp();
+    }else{
+        document.getElementById("error").innerText = "Wrong password!";
+    }
+}
+
+/* ===== APP ===== */
+
+function startApp(){
+
+const names = [
+"Айдана Н.","Аружан А.","Мадина К.","Жанерке С.","Айару Т.","Нұрай Ы.","Алина П.","Меруерт А.","Айзере Б.","Дильназ Е.",
+"Айсұлу К.","Гүлназ М.","Сәуле Т.","Айша Н.","Фатима Б.","Зере А.","Индира С.","Амина Ж.","Сымбат К.","Назерке Т.",
+"Ернар Т.","Данияр С.","Руслан Б.","Алихан М.","Нұрсұлтан Е.","Диас Ж.","Ерасыл А.","Бекзат Т.","Алдияр К.","Арман Н.",
+"Мұхаммед А.","Нұрбек С.","Айдос Т.","Еркебұлан Ж.","Самат К.","Рамазан Е.","Ержан А.","Қайсар М.","Темірлан Б.","Әлихан С."
+];
+
+function randName(){
+    return names[Math.floor(Math.random()*names.length)];
+}
+
+function randAmount(min,max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function format(n){
+    return n.toLocaleString('ru-RU') + " ₸";
+}
+
+const stacks = [
+    {el:"s1", min:500, max:5000},
+    {el:"s2", min:5000, max:15000},
+    {el:"s3", min:15000, max:50000},
+    {el:"s4", min:50000, max:100000}
+];
+
+function updateStack(stack){
+
+    const container = document.getElementById(stack.el);
+
+    const el = document.createElement("div");
+    el.className = "notification";
+
+    el.innerHTML = `
+        <div class="now">сейчас</div>
+        <img src="logo.png">
+        <div class="text">
+            <div class="title">Kaspi Gold</div>
+            <div class="subtitle">Пополнение: ${format(randAmount(stack.min,stack.max))}</div>
+            <div class="small">${randName()}</div>
+        </div>
+    `;
+
+    container.prepend(el);
+
+    const items = container.querySelectorAll(".notification");
+
+    items.forEach((item, i)=>{
+        item.style.top = (i * 18) + "px";
+        item.style.zIndex = 100 - i;
+
+        if(i === 0){
+            item.style.opacity = 1;
+            item.style.transform = "scale(1)";
+        }
+        else if(i === 1){
+            item.style.opacity = 0.35;
+            item.style.transform = "scale(0.96)";
+        }
+        else{
+            item.style.opacity = 0;
+            item.remove();
+        }
+    });
+}
+
+setInterval(()=>{
+    stacks.forEach(s => updateStack(s));
+},2000);
+
+}
+
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
